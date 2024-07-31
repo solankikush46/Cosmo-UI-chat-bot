@@ -3,7 +3,7 @@ import { ResponsiveBar } from "@nivo/bar";
 
 function BarChart({ data }) {
   return (
-    <div style={{ height: 400 }}>
+    <div style={{ height: 400}}>
       <h1>Chat History Statistics</h1>
       <ResponsiveBar
         data={data}

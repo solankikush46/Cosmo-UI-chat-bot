@@ -18,12 +18,13 @@ function PreviousSessions({ onSessionSelect}) {
         <div>
             <h2>Previous Chat Sessions</h2>
             <List>
-                {sessions.map((session, index) =>{
+                {sessions.slice().reverse().map((session, index) =>{
+                    const date= new Date(session.timestamp).toLocaleDateString();
                     const firstUserMessage =session.messages.find(msg => msg.sender === 'user');
                     const sessionLabel = firstUserMessage ? firstUserMessage.message : 'Empty chat';
                     return (
                     <ListItem button key = {index} onClick={() => onSessionSelect(session)}>
-                        <ListItemText primary={`Session ${index + 1}`} secondary={session.timestamp.toLocaleString()} />
+                        <ListItemText primary= {sessionLabel} secondary={date} />
                     </ListItem>
                 )
                 })}

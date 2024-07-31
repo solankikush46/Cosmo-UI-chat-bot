@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+
+.previous-sessions-container{
+  height: 800px;
+  overflow-y: auto;
+}

@@ -11,14 +11,7 @@ const API_KEY = "sk-None-Qa9UZV7q0UzGZTNRKNZxT3BlbkFJO6ff4WORzIrRoy254h3K";
 
 function App() {
   const [typing, setTyping] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      message: "Hello I am Jarvis.!",
-      sender: "Jarvis",
-      direction: "incoming",
-      timestamp: new Date()
-    }
-  ]) //[]
+  const [messages, setMessages] = useState([]); //[]
 
   const [activityData, setActivityData] = useState([]);
   const [sessions, setSessions] = useState([]);
@@ -41,15 +34,31 @@ function App() {
       }));
       const sortedSessions = parsedSessions.sort((a,b)=> new Date(b.timestamp)- new Date(a.timestamp));
       setSessions(sortedSessions);
-    }
-  }, []);
+   
+
+  const aggregatedActivityData = parsedSessions.reduce((acc,session)=>{
+    session.messages.forEach(msg=> {
+      const date =new Date(msg.timestamp).toISOString().split('T')[0];
+      if(!acc[date]){
+        acc[date] = {date: date,messages: 0};
+      }
+      acc[date].messages +=1;
+    })
+    return acc;
+  },{})
+
+  const activityDataArray = Object.values(aggregatedActivityData);
+  setActivityData(activityDataArray);
+  localStorage.setItem('activityData', JSON.stringify(activityDataArray));  
+}
+}, []);
 
   
   useEffect(()=>{
     const initialActivityData =messages.reduce((acc,msg)=>{
-      const date= msg.timestamp.toISOString().split('T')[0];
+      const date= new Date(msg.timestamp).toISOString().split('T')[0];
       if(!acc[date]){
-        acc[date] ={date: date,message: 0};
+        acc[date] ={date: date,messages: 0};
       }
       acc[date].messages +=1;
       return acc;
@@ -63,6 +72,7 @@ function App() {
     const storedSessions =JSON.parse(localStorage.getItem('chatSessions')) || [];
     const newSessions = [...storedSessions, { messages, timestamp: new Date()}];
     localStorage.setItem('chatSessions', JSON.stringify(newSessions));
+  
   }, [messages]);
 
 const handleSend = async (message) => {
@@ -172,10 +182,13 @@ const handleSessionSelect = (session) => {
     <div className="App">
       <Grid container spacing = {2}>
         <Grid item xs = {3}>
-        <PreviousSessions sessions={sessions} onSessionSelect={handleSessionSelect}/>
+        <div className="previous-sessions-container">  
+          <PreviousSessions sessions={sessions} onSessionSelect={handleSessionSelect}/>
+        </div>
+        
       </Grid>
-      <Grid item xs={9}>
-      <div style={{ position: "relative", height: "800px", width: "700px"}}>
+      <Grid item xs={6}>
+      <div style={{ position: "relative", height: "800px", width: "100%"}}>
         <MainContainer>
           <ChatContainer>
             <MessageList
@@ -189,9 +202,11 @@ const handleSessionSelect = (session) => {
           </ChatContainer>
         </MainContainer>
       </div>
-      <div style={{marginTop: '20px'}}>
-        <BarChart data={activityData}/>
-      </div>
+    </Grid>
+    <Grid item xs ={3}>
+            <div style={{height: '800px', width: '100%'}}>
+              <BarChart data={activityData}/>
+            </div>
     </Grid>
     </Grid>
     </div>
