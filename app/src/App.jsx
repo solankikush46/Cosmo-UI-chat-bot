@@ -5,7 +5,8 @@ import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import{ MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator} from "@chatscope/chat-ui-kit-react"
 import BarChart from './scenes/global/Barcharts';
 import PreviousSessions from './scenes/global/previousChat';
-import { Grid } from '@mui/material'; 
+import { Grid } from '@mui/material';
+import Dashboard from './scenes/dashboard/dashboard';
 
 const API_KEY = "sk-None-Qa9UZV7q0UzGZTNRKNZxT3BlbkFJO6ff4WORzIrRoy254h3K";
 
@@ -70,8 +71,10 @@ function App() {
 
     //Save the  current session to the local storage
     const storedSessions =JSON.parse(localStorage.getItem('chatSessions')) || [];
-    const newSessions = [...storedSessions, { messages, timestamp: new Date()}];
-    localStorage.setItem('chatSessions', JSON.stringify(newSessions));
+    if (storedSessions.length === 0 || storedSessions[storedSessions.length - 1].messages.length !== messages.length) {
+      const newSessions = [...storedSessions, { messages, timestamp: new Date() }];
+      localStorage.setItem('chatSessions', JSON.stringify(newSessions));
+    }
   
   }, [messages]);
 
@@ -176,6 +179,19 @@ async function processMessageToChatGPT(chatMessages) {
 
 const handleSessionSelect = (session) => {
   setMessages(session.messages);
+};
+
+const handleNewChat = () => {
+  setMessages([]);
+  setView('chat');
+};
+
+const handleViewPreviousChats = () => {
+  setView('previousChats');
+};
+
+const handleViewChatHistory = () => {
+  setView('chatHistory');
 };
 
   return (

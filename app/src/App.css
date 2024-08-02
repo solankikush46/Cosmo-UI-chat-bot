@@ -45,3 +45,24 @@
   height: 800px;
   overflow-y: auto;
 }
+.message-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.message-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease-in, transform 300ms ease-in;
+}
+
+.message-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message-exit-active {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 300ms ease-in, transform 300ms ease-in;
+}
