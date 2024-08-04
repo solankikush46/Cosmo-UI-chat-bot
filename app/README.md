@@ -1,8 +1,16 @@
-# React + Vite
+# Cosmo UI Chat Bot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cosmo UI Chat Bot is a React-based chat application that integrates with OpenAI's GPT-3.5-turbo model to provide interactive chat experiences. The project includes features such as viewing previous chat sessions, displaying chat activity statistics, and managing chat history.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Real-Time Chat**: Interactive chat interface with real-time responses from GPT-3.5-turbo.
+- **Previous Chat Sessions**: View and load previous chat sessions stored in local storage.
+- **Chat Activity Statistics**: Visual representation of chat activity using a bar chart.
+- **Session Management**: Automatically saves chat sessions and displays them in reverse chronological order.
+
+## Future Enhancements
+
+- Creation of Dashboard
+- Addition of Push Notifications
+- Cloud Storage Integration
